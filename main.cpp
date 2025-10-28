@@ -3,11 +3,12 @@
 #include <string>
 #include <vector>
 #include <iomanip>
-#include <stdio.h>
+#include <cstdio>
 
 
 using namespace std;
 const string ClientsFileName = "Clients.txt";
+const string UsersFileName = "Users.txt";
 
 void clear_console_hard_ansi()
 {
@@ -22,6 +23,7 @@ void clear_console_hard_ansi()
 
 
 void ShowMainMenue();
+
 void ShowTransactionsMenue();
 
 struct sClient
@@ -34,6 +36,13 @@ struct sClient
     bool MarkForDelete = false;
 
 
+};
+
+struct sUser
+{
+    string  UserName;
+    string Password;
+    string PermissionsBinaries;
 };
 
 vector<string> SplitString(string S1, string Delim)
@@ -98,6 +107,33 @@ string ConvertRecordToLine(sClient Client, string Seperator = "#//#")
     return stClientRecord;
 
 }
+
+
+sUser ConvertLineRecordUser(string Line, string Seperator = "#//#") {
+
+    sUser User;
+    vector<string> vUserData;
+
+    vUserData = SplitString(Line, Seperator);
+
+    User.UserName = vUserData[0];
+    User.Password = vUserData[1];
+    User.PermissionsBinaries = vUserData[2];
+
+    return User;
+}
+
+string ConvertRecordtoLineUser(sUser User, string Seperator = "#//#") {
+    string stUserRecord = "";
+
+    stUserRecord += User.UserName + Seperator;
+    stUserRecord += User.Password + Seperator;
+    stUserRecord += User.PermissionsBinaries + Seperator;
+
+    return stUserRecord;
+
+}
+
 
 bool ClientExistsByAccountNumber(string AccountNumber, string FileName)
 {
@@ -688,6 +724,7 @@ void GoBackToMainMenue()
     ShowMainMenue();
 
 }
+
 void GoBackToTransactionsMenue()
 {
     cout << "\n\nPress any key to go back to Transactions Menue...";
@@ -695,6 +732,7 @@ void GoBackToTransactionsMenue()
     ShowTransactionsMenue();
 
 }
+
 short ReadTransactionsMenueOption()
 {
     cout << "Choose what do you want to do? [1 to 4]? ";
@@ -832,10 +870,23 @@ void ShowMainMenue()
     PerfromMainMenueOption((enMainMenueOptions)ReadMainMenueOption());
 }
 
+void login()
+{
+    cout << "----------------------------\n";
+    cout << "\t\tLogin Screen\n";
+    cout << "----------------------------\n";
+
+    ShowMainMenue();
+    //cout << "Enter your username: ";
+}
+
 int main()
 
 {
-    ShowMainMenue();
+
+
+
+    login();
     system("pause>0");
     return 0;
 }
